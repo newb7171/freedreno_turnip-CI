@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 #Define variables
 green='\033[0;32m'
