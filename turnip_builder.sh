@@ -12,7 +12,7 @@ ndk="$workdir/$ndkver/toolchains/llvm/prebuilt/linux-x86_64/bin"
 sdkver="34"
 mesasrc="https://gitlab.freedesktop.org/mesa/mesa.git"
 
-		mkdir -p "$workdir" && cd "$_"
+		mkdir -p "$workdir" && cd "$workdir"
 
 	wget https://github.com/SnowNF/ndk-aarch64-linux/releases/download/0.0.2/android-ndk-r29-linux-aarch64.tar.gz
 	
