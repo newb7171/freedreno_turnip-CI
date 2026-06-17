@@ -9,9 +9,8 @@ sdkver="34"
 mesasrc="https://gitlab.freedesktop.org/mesa/mesa.git"
 BUILD_VERSION="26.2.0"
 
+        mkdir -p "$(pwd)/turnip"
 		mkdir -p "$workdir" && cd "$workdir"
-
-		mkdir -p "$(pwd)/turnip"
 
 	wget https://github.com/SnowNF/ndk-aarch64-linux/releases/download/0.0.2/android-ndk-r29-linux-aarch64.tar.gz
 	
@@ -90,7 +89,7 @@ EOF
 		
 	echo "Making the archive"
 	
-	cd $(pwd)/turnip/lib
+	cd "$(pwd)/turnip/lib"
 	
 	patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
 	
