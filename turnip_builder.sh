@@ -11,8 +11,7 @@ magiskdir="$workdir/turnip_module"
 ndkver="android-ndk-r29"
 ndk="$workdir/$ndkver/toolchains/llvm/prebuilt/linux-x86_64/bin"
 sdkver="34"
-mesasrc="https://github.com/whitebelyash/mesa-unified"
-srcfolder="mesa"
+mesasrc="https://gitlab.freedesktop.org/mesa/mesa.git"
 
 clear
 
@@ -60,29 +59,9 @@ prepare_workdir(){
 		tar -xzf android-ndk-r29-linux-aarch4.tar.gz
 
 	echo "Downloading mesa source ..." $'\n'
-		git clone $mesasrc --depth=1 --no-single-branch $srcfolder
+		git clone $mesasrc --depth=1
 		cd $srcfolder
-}
-
-apply_patch() {
-	echo "Applying patch $1"
-	if ! git apply --check $1; then
-			echo "Failed to apply $1!"
-			exit 1
-		fi
-    	git apply $1
-}
-
-# $1 - real branch, $2 - escaped branch name
-build_lib_for_android(){
-	echo "==== Building Mesa on $1 branch ===="
-	git checkout --force origin/$1
-	if [[ "$3" == "apply" ]]; then
-		echo "Applying patches"
-		for patch in $base_workdir/patches/*; do
-			apply_patch $patch
-		done
-	fi
+		
 	echo "Pushing TU_VERSION..."
 	echo "#define TUGEN8_DRV_VERSION \"v$BUILD_VERSION\"" > ./src/freedreno/vulkan/tu_version.h
 	#Workaround for using Clang as c compiler instead of GCC
@@ -134,36 +113,37 @@ EOF
 		meson setup build-android-aarch64 \
 			--cross-file "android-aarch64.txt" \
 			--native-file "native.txt" \
-			--prefix /tmp/turnip-$2 \
+			--prefix /tmp/turnip \
 			-Dbuildtype=release \
 			-Dstrip=true \
 			-Dplatforms=android \
 			-Dvideo-codecs= \
-			-Dplatform-sdk-version="$sdkver" \
+			-Dplatform-sdk-version=34 \
 			-Dandroid-stub=true \
 			-Dgallium-drivers= \
 			-Dvulkan-drivers=freedreno \
 			-Dvulkan-beta=true \
 			-Dfreedreno-kmds=kgsl \
 			-Degl=disabled \
-			-Dplatform-sdk-version=36 \
-			-Dandroid-libbacktrace=disabled \
-			--reconfigure
+			-Dandroid-libbacktrace=disabled
 
 	echo "Compiling build files ..." $'\n'
 		ninja -C build-android-aarch64 install
-
-	if ! [ -a /tmp/turnip-$2/lib/libvulkan_freedreno.so ]; then
-		echo -e "$red Build failed! $nocolor" && exit 1
-	fi
+		
 	echo "Making the archive"
-	cd /tmp/turnip-$2/lib
+	
+	cd /tmp/turnip/lib
+	
+	patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
+	
+	mv libvulkan_freedreno.so vulkan.adreno.so
+	
 	cat <<EOF >"meta.json"
 {
   "schemaVersion": 1,
-  "name": "A8XX Turnip v$BUILD_VERSION",
-  "description": "A8xx support with some hacks. Built from $1 branch",
-  "author": "whitebelyash",
+  "name": "Turnip v$BUILD_VERSION",
+  "description": "Built from source",
+  "author": "JustCallMeJade",
   "packageVersion": "1",
   "vendor": "Mesa",
   "driverVersion": "Vulkan 1.4.335",
@@ -171,7 +151,7 @@ EOF
   "libraryName": "libvulkan_freedreno.so"
 }
 EOF
-zip /tmp/a8xx-$2-V$BUILD_VERSION.zip libvulkan_freedreno.so meta.json
+zip -9 /root/turnip/V$BUILD_VERSION.zip vulkan.adreno.so meta.json
 cd -
 if ! [ -a /tmp/a8xx-$2-V$BUILD_VERSION.zip ]; then
 	echo -e "$red Failed to pack the archive! $nocolor"
