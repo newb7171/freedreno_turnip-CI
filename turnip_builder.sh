@@ -54,10 +54,10 @@ prepare_workdir(){
 	echo "Preparing work directory ..." $'\n'
 		mkdir -p "$workdir" && cd "$_"
 
-	echo "Downloading android-ndk from google server ..." $'\n'
-		curl https://dl.google.com/android/repository/"$ndkver"-linux.zip --output "$ndkver"-linux.zip &> /dev/null
+	wget https://github.com/SnowNF/ndk-aarch64-linux/releases/download/0.0.2/android-ndk-r29-linux-aarch64.tar.gz
+	
 	echo "Exracting android-ndk ..." $'\n'
-		unzip "$ndkver"-linux.zip &> /dev/null
+		tar -xzf android-ndk-r29-linux-aarch4.tar.gz
 
 	echo "Downloading mesa source ..." $'\n'
 		git clone $mesasrc --depth=1 --no-single-branch $srcfolder
@@ -126,8 +126,8 @@ strip = 'llvm-strip'
 c_ld = 'ld.lld'
 cpp_ld = 'ld.lld'
 system = 'linux'
-cpu_family = 'x86_64'
-cpu = 'x86_64'
+cpu_family = 'aarch64'
+cpu = 'armv8'
 endian = 'little'
 EOF
 
