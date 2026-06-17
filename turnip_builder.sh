@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 #Define variables
 workdir="$(pwd)/turnip_workdir"
 ndk="$workdir/r29/toolchains/llvm/prebuilt/linux-x86_64/bin"
@@ -33,7 +35,7 @@ BUILD_VERSION="26.2.0"
 [binaries]
 ar = '$ndk/llvm-ar'
 c = '$ndk/aarch64-linux-android34-clang'
-cpp = [$ndk/aarch64-linux-android34-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '--start-no-unused-arguments', '-static-libstdc++', '--end-no-unused-arguments']
+cpp = ['$ndk/aarch64-linux-android34-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '--start-no-unused-arguments', '-static-libstdc++', '--end-no-unused-arguments']
 c_ld = '$ndk/ld.lld'
 cpp_ld = '$ndk/ld.lld'
 strip = '$ndk/llvm-strip'
@@ -47,13 +49,15 @@ endian = 'little'
 EOF
 
 		cat <<EOF >"native.txt"
-[build_machine]
+[binaries]
 c = ['ccache', 'clang']
 cpp = ['ccache', 'clang++']
 ar = 'llvm-ar'
 strip = 'llvm-strip'
 c_ld = 'ld.lld'
 cpp_ld = 'ld.lld'
+
+[build_machine]
 system = 'linux'
 cpu_family = 'aarch64'
 cpu = 'armv8'
@@ -100,7 +104,7 @@ EOF
   "vendor": "Mesa",
   "driverVersion": "Vulkan 1.4.335",
   "minApi": 28,
-  "libraryName": "libvulkan_freedreno.so"
+  "libraryName": "vulkan.adreno.so"
 }
 EOF
 zip -9 /root/turnip/V$BUILD_VERSION.zip vulkan.adreno.so meta.json
