@@ -11,6 +11,8 @@ BUILD_VERSION="26.2.0"
 
 		mkdir -p "$workdir" && cd "$workdir"
 
+		mkdir /root/turnip
+
 	wget https://github.com/SnowNF/ndk-aarch64-linux/releases/download/0.0.2/android-ndk-r29-linux-aarch64.tar.gz
 	
 		tar -xzf android-ndk-r29-linux-aarch64.tar.gz
