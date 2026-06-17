@@ -11,7 +11,7 @@ BUILD_VERSION="26.2.0"
 
 	wget https://github.com/SnowNF/ndk-aarch64-linux/releases/download/0.0.2/android-ndk-r29-linux-aarch64.tar.gz
 	
-		tar -xzf android-ndk-r29-linux-aarch4.tar.gz
+		tar -xzf android-ndk-r29-linux-aarch64.tar.gz
 		
 		git clone $mesasrc --depth=1
 		cd mesa
