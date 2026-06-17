@@ -11,7 +11,7 @@ BUILD_VERSION="26.2.0"
 
 		mkdir -p "$workdir" && cd "$workdir"
 
-		mkdir /root/turnip
+		mkdir -p "$(pwd)/turnip"
 
 	wget https://github.com/SnowNF/ndk-aarch64-linux/releases/download/0.0.2/android-ndk-r29-linux-aarch64.tar.gz
 	
@@ -69,7 +69,7 @@ EOF
 		meson setup build-android-aarch64 \
 			--cross-file "android-aarch64.txt" \
 			--native-file "native.txt" \
-			--prefix /tmp/turnip \
+			--prefix "$(pwd)/turnip \
 			-Dbuildtype=release \
 			-Dstrip=true \
 			-Dplatforms=android \
@@ -85,12 +85,12 @@ EOF
 			-Dzstd=disabled \
 			-Dspirv-tools=disabled
 
-	echo "Compiling build files ..." $'\n'
+	echo "Compiling build files"
 		ninja -C build-android-aarch64 install
 		
 	echo "Making the archive"
 	
-	cd /tmp/turnip/lib
+	cd $(pwd)/turnip/lib
 	
 	patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
 	
@@ -109,7 +109,7 @@ EOF
   "libraryName": "vulkan.adreno.so"
 }
 EOF
-zip -9 /root/turnip/V$BUILD_VERSION.zip vulkan.adreno.so meta.json
+zip -9 $(pwd)/turnip/V$BUILD_VERSION.zip vulkan.adreno.so meta.json
 
 echo "build complete."
 
