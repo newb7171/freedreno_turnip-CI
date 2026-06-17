@@ -59,7 +59,7 @@ strip = 'llvm-strip'
 c_ld = 'ld.lld'
 cpp_ld = 'ld.lld'
 
-[build_machine]
+[host_machine]
 system = 'linux'
 cpu_family = 'aarch64'
 cpu = 'armv8'
@@ -69,7 +69,7 @@ EOF
 		meson setup build-android-aarch64 \
 			--cross-file "android-aarch64.txt" \
 			--native-file "native.txt" \
-			--prefix "$(pwd)/turnip \
+			--prefix "$(pwd)/turnip" \
 			-Dbuildtype=release \
 			-Dstrip=true \
 			-Dplatforms=android \
