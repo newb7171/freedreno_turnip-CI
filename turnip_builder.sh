@@ -11,6 +11,7 @@ ndkver="android-ndk-r29"
 ndk="$workdir/$ndkver/toolchains/llvm/prebuilt/linux-x86_64/bin"
 sdkver="34"
 mesasrc="https://gitlab.freedesktop.org/mesa/mesa.git"
+BUILD_VERSION="26.2.0"
 
 		mkdir -p "$workdir" && cd "$workdir"
 
