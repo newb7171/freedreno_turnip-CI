@@ -35,12 +35,13 @@ export LDFLAGS="-fuse-ld=lld"
 cat <<EOF >"android-aarch64.txt"
 [binaries]
 ar = '$ndk/llvm-ar'
-c = '$ndk/aarch64-linux-android34-clang'
-cpp = ['$ndk/aarch64-linux-android34-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '--start-no-unused-arguments', '-static-libstdc++', '--end-no-unused-arguments']
+c = '$ndk/aarch64-linux-android35-clang'
+cpp = ['$ndk/aarch64-linux-android35-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '--start-no-unused-arguments', '-static-libstdc++', '--end-no-unused-arguments']
 c_ld = '$ndk/ld.lld'
 cpp_ld = '$ndk/ld.lld'
 strip = '$ndk/llvm-strip'
 pkg-config = ['env', 'PKG_CONFIG_LIBDIR=$ndk/pkg-config', '/usr/bin/pkg-config']
+ranlib = 'ndk/llvm-ranlib
 
 [host_machine]
 system = 'android'
@@ -72,8 +73,8 @@ meson setup build-android-aarch64 \
     -Dbuildtype=release \
     -Dstrip=true \
     -Dplatforms=android \
-    -Dvideo-codecs= \
-    -Dplatform-sdk-version=34 \
+    -Dvideo-codecs=all \
+    -Dplatform-sdk-version=35 \
     -Dandroid-stub=true \
     -Dgallium-drivers= \
     -Dvulkan-drivers=freedreno \
