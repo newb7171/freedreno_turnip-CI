@@ -55,8 +55,8 @@ EOF
 
 cat <<EOF >"native.txt"
 [binaries]
-c = ['ccache', 'clang']
-cpp = ['ccache', 'clang++']
+c = '/usr/bin/clang'
+cpp = '/usr/bin/clang++'
 ar = 'llvm-ar'
 strip = 'llvm-strip'
 c_ld = 'ld.lld'
@@ -79,7 +79,7 @@ meson setup build-android-aarch64 \
     -Dbuildtype=release \
     -Dstrip=true \
     -Dplatforms=android \
-    -Dvideo-codecs=all \
+    -Dvideo-codecs= \
     -Dplatform-sdk-version=35 \
     -Dandroid-stub=true \
     -Dgallium-drivers= \
