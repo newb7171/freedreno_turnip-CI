@@ -58,7 +58,7 @@ strip = 'llvm-strip'
 c_ld = 'ld.lld'
 cpp_ld = 'ld.lld'
 
-[host_machine]
+[build_machine]
 system = 'linux'
 cpu_family = 'aarch64'
 cpu = 'armv8'
