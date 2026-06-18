@@ -37,16 +37,15 @@ export LDFLAGS="-fuse-ld=lld"
 
 echo "Generating Build files..."
 
-cat <<EOF >"android-aarch64.txt"
+cat <<EOF > android-aarch64.txt
 [binaries]
 ar = '$ndk/llvm-ar'
-c = '$ndk/aarch64-linux-android35-clang'
-cpp = ['$ndk/aarch64-linux-android35-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '--start-no-unused-arguments', '-static-libstdc++', '--end-no-unused-arguments']
+c = '$ndk/aarch64-linux-android35-clang -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables --start-no-unused-arguments -static-libstdc++ --end-no-unused-arguments'
+cpp = '$ndk/aarch64-linux-android35-clang++ -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables --start-no-unused-arguments -static-libstdc++ --end-no-unused-arguments'
 c_ld = '$ndk/ld.lld'
 cpp_ld = '$ndk/ld.lld'
 strip = '$ndk/llvm-strip'
-pkg-config = ['env', 'PKG_CONFIG_LIBDIR=$ndk/pkg-config', '/usr/bin/pkg-config']
-ranlib = '$ndk/llvm-ranlib'
+pkg-config = '/usr/bin/pkg-config'
 
 [host_machine]
 system = 'android'
@@ -59,8 +58,8 @@ cat <<EOF >"native.txt"
 [binaries]
 c = '/usr/bin/clang'
 cpp = '/usr/bin/clang++'
-ar = 'llvm-ar'
-strip = 'llvm-strip'
+ar = '/usr/bin/llvm-ar'
+strip = '/usr/bin/llvm-strip'
 c_ld = 'ld.lld'
 cpp_ld = 'ld.lld'
 pkg-config = '/usr/bin/pkg-config'
