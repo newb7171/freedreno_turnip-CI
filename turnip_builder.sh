@@ -46,7 +46,7 @@ c_ld = '$ndk/ld.lld'
 cpp_ld = '$ndk/ld.lld'
 strip = '$ndk/llvm-strip'
 pkg-config = ['env', 'PKG_CONFIG_LIBDIR=$ndk/pkg-config', '/usr/bin/pkg-config']
-ranlib = 'ndk/llvm-ranlib'
+ranlib = '$ndk/llvm-ranlib'
 
 [host_machine]
 system = 'android'
