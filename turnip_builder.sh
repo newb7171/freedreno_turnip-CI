@@ -61,6 +61,7 @@ ar = 'llvm-ar'
 strip = 'llvm-strip'
 c_ld = 'ld.lld'
 cpp_ld = 'ld.lld'
+pkg-config = '/usr/bin/pkg-config'
 
 [build_machine]
 system = 'linux'
