@@ -8,6 +8,8 @@ sdkver="34"
 mesasrc="https://gitlab.freedesktop.org/mesa/mesa.git"
 BUILD_VERSION="26.2.0"
 
+echo "Only works in debian!!! press Ctrl + C to exit"
+
 mkdir -p "$workdir"
 cd "$workdir"
 
