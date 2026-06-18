@@ -23,6 +23,7 @@ cd mesa
 echo "Pushing TU_VERSION..."
 echo "#define TUGEN8_DRV_VERSION \"v$BUILD_VERSION\"" > ./src/freedreno/vulkan/tu_version.h
 
+export PATH="$workdir/bin:$ndk:$PATH"
 export CC=clang
 export CXX=clang++
 export AR=llvm-ar
@@ -31,6 +32,8 @@ export STRIP=llvm-strip
 export OBJDUMP=llvm-objdump
 export OBJCOPY=llvm-objcopy
 export LDFLAGS="-fuse-ld=lld"
+
+echo "Generating Build files..."
 
 cat <<EOF >"android-aarch64.txt"
 [binaries]
@@ -41,7 +44,7 @@ c_ld = '$ndk/ld.lld'
 cpp_ld = '$ndk/ld.lld'
 strip = '$ndk/llvm-strip'
 pkg-config = ['env', 'PKG_CONFIG_LIBDIR=$ndk/pkg-config', '/usr/bin/pkg-config']
-ranlib = 'ndk/llvm-ranlib
+ranlib = 'ndk/llvm-ranlib'
 
 [host_machine]
 system = 'android'
@@ -66,6 +69,8 @@ cpu = 'armv8'
 endian = 'little'
 EOF
 
+echo "Setting up and compiling..."
+
 meson setup build-android-aarch64 \
     --cross-file "android-aarch64.txt" \
     --native-file "native.txt" \
@@ -88,6 +93,8 @@ meson setup build-android-aarch64 \
 ninja -C build-android-aarch64 install
 
 cd "$workdir/turnip/lib"
+
+echo "Packaging..."
 
 patchelf --set-soname vulkan.adreno.so libvulkan_freedreno.so
 
